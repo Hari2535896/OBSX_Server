@@ -3,7 +3,7 @@ Run as:
 gradle clean tomcatrunwar
 '''
 
-buildscript {
+/*buildscript {
   repositories {
      mavenLocal()
      mavenCentral() 
@@ -18,7 +18,8 @@ buildscript {
   }
 
   dependencies {
-     classpath group: 'org.zeroturnaround', name: 'gradle-jrebel-plugin', version: '1.0.2-SNAPSHOT'
+classpath group: 'org.zeroturnaround', name: 'gradle-jrebel-plugin', version: '1.1.6'
+
   }
 }
 
@@ -28,7 +29,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'org.gradle.api.plugins:gradle-tomcat-plugin:0.9.7'
+classpath 'org.gradle.api.plugins:gradle-tomcat-plugin:0.9.9'
   	}
 }
 
@@ -38,13 +39,32 @@ buildscript {
     }
 
     dependencies {
-        classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.5.0'
+	classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.10.0'
     }
 }
+*/
+buildscript {
+  repositories {
+    jcenter()
+    mavenCentral()
+    maven { url "https://plugins.gradle.org/m2/" }
+  }
 
+  dependencies {
+     classpath 'org.gradle.api.plugins:gradle-tomcat-plugin:1.0',
+               'nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0',
+               'org.zeroturnaround:gradle-jrebel-plugin:1.1.2',
+               'org.springframework.boot:spring-boot-gradle-plugin:1.1.6.RELEASE' // also change springDataJpaVersion below
+     classpath 'org.apache.openjpa:openjpa-all:2.4.1'
+     classpath 'at.schmutterer.oss.gradle:gradle-openjpa:0.2.0'
+     classpath 'gradle.plugin.org.nosphere.apache:creadur-rat-gradle:0.2.2'
+  }
+}
  
      
  
+apply plugin: "org.nosphere.apache.rat" 
+  
 
 apply plugin: 'rebel'
 apply plugin: 'license'
@@ -55,16 +75,18 @@ apply plugin: 'tomcat'
 apply plugin: 'project-report'
 
 /* define the valid syntax level for source files */
-sourceCompatibility = JavaVersion.VERSION_1_7
+/* sourceCompatibility = JavaVersion.VERSION_1_7 */
+sourceCompatibility = JavaVersion.VERSION_1_8
 /* define binary compatiblity version */
-targetCompatibility = JavaVersion.VERSION_1_7
+/* targetCompatibility = JavaVersion.VERSION_1_7 */
+targetCompatibility = JavaVersion.VERSION_1_8
 
-project.ext.springVersion = '3.2.2.RELEASE'
+project.ext.springVersion = '4.0.7.RELEASE'
 project.ext.springSecurityVersion = '3.1.3.RELEASE'
 project.ext.hibernateValidatorVersion = '4.3.1.Final'
 project.ext.hibernateCoreVersion = '4.1.9.Final'
 project.ext.jerseyVersion = '1.17'
-project.ext.springDataJpaVersion = '1.2.1.RELEASE'
+project.ext.springDataJpaVersion = '1.7.0.RELEASE'
 
 project.ext.mysqlUser='root'
 project.ext.mysqlPassword='mysql'
@@ -83,7 +105,9 @@ repositories {
     }
     maven {
     /*	url "http://repository.pentaho.org/artifactory/pentaho/" */
-      url "http://nexus.pentaho.org/content/repositories/pentaho-public-release-repos/" 
+     /* url "http://nexus.pentaho.org/content/repositories/pentaho-public-release-repos/"*/ 
+     /*  url "http://repository.pentaho.org/artifactory/repo/" */
+          url "http://nexus.pentaho.org/content/repositories/omni/"
    }
 }
 
@@ -113,6 +137,7 @@ dependencies {
 	   			[group: 'org.springframework', name: 'spring-core', version: springVersion],
 	   			[group: 'org.springframework', name: 'spring-aspects', version: springVersion],
 	   			[group: 'org.springframework', name: 'spring-web', version: springVersion],
+				[group: 'org.springframework', name: 'spring-context-support', version: springVersion],
 	   			[group: 'org.springframework.security', name: 'spring-security-core', version: springSecurityVersion],
 	   			[group: 'org.springframework.security', name: 'spring-security-web', version: springSecurityVersion],
 	   			[group: 'org.springframework.security', name: 'spring-security-config', version: springSecurityVersion],
@@ -335,7 +360,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.github.ben-manes:gradle-flyway-plugin:0.2'
+       /* classpath 'com.github.ben-manes:gradle-flyway-plugin:0.2' */
+	classpath 'com.github.ben-manes:gradle-flyway-plugin:0.5'
         classpath 'mysql:mysql-connector-java:5.1.22'
     }
 }
